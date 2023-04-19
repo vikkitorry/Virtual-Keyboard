@@ -19,30 +19,33 @@ class Letters {
       'z', 'x', 'c', 'v', 'b', 'n', 'm', 'й', 'ц', 'у', 'к', 'е', 'н', 'г', 'ш', 'щ', 'з', 'х', 'ъ',
       'ф', 'ы', 'в', 'а', 'п', 'р', 'о', 'л', 'д', 'ж', 'э', 'я', 'ч', 'с', 'м', 'и', 'т', 'ь', 'б', 'ю',
     ];
+    this.symbolsArrEn = [
+      '~', '1', '2', '3', '4', '5', '6', '7', '8', '9', '0', '-', '=',
+      'q', 'w', 'e', 'r', 't', 'y', 'u', 'i', 'o', 'p', '[', ']', '/','a', 's', 'd', 'f', 'g',
+      'h', 'j', 'k', 'l', ';', "''", 'z', 'x', 'c', 'v', 'b', 'n', 'm', ',', '.', '?',
+    ];
+    this.symbolsArrRu = [
+      'ё', '1', '2', '3', '4', '5', '6', '7', '8', '9', '0', '_', '+',
+      'й', 'ц', 'у', 'к', 'е', 'н', 'г', 'ш', 'щ', 'з', 'х', 'ъ', '/','ф', 'ы', 'в', 'а', 'п',
+      'р', 'о', 'л', 'д', 'ж', 'э', 'я', 'ч', 'с', 'м', 'и', 'т', 'ь', 'б', 'ю', '.',
+    ];
   }
 }
 
+
 //  lang = true means RU language
-let lang = false;
+let lang = true;
 const body = document.querySelector('body');
 const actualKeyboard = new Letters();
 let keyboard;
 let buttons;
-const specialBtn = [
-  'key-backspace',
-  'key-tab',
-  'key-del',
-  'key-capsLock',
-  'key-enter',
-  'key-shift',
-  'key-ctr',
-  'key-win',
-  'key-alt',
-  'key-left',
-  'key-top',
-  'key-down',
-  'key-right',
-];
+let textWindow;
+
+// keySymbols and keyLetters includes only keys which can be changed:
+// to upper/lower case
+let keyLetters = [];
+// ru / eng
+let keySymbols = [];
 
 function createElement(element, className) {
   const item = document.createElement(element);
@@ -121,7 +124,7 @@ function addClassChar(i, line) {
       }
       break;
     default:
-      chars = actualKeyboard.engLetters[i];
+      chars = actualKeyboard.ruLetters[i];
   }
   if (keys) {
     for (let j = 0; j < keys.length; j++) {
@@ -150,31 +153,31 @@ function createPage() {
   }
 }
 
-function changeKeyboard(el, textWindow) {
+function changeKeyboard(el) {
   if (el.classList.contains('key-backspace')) {
     textWindow.textContent = textWindow.textContent.slice(0, -1);
+    return textWindow.textContent;
   } if (el.classList.contains('key-tab')) {
     textWindow.textContent += '    ';
+    return textWindow.textContent;
   } if (el.classList.contains('key-space')) {
     textWindow.textContent += ' ';
+    return textWindow.textContent;
   } if (el.classList.contains('key-del')) {
     textWindow.textContent = '';
+    return textWindow.textContent;
   } if (el.classList.contains('key-capsLock')) {
-    for (let i = 0; i < buttons.length; i++) {
-      if (actualKeyboard.lettrArr.includes(buttons[i].textContent) ||
-      actualKeyboard.lettrArr.includes(buttons[i].textContent.toLowerCase())) {
-        if (buttons[i].textContent === buttons[i].textContent.toLowerCase()) {
-          buttons[i].textContent = buttons[i].textContent.toUpperCase();
-        } else {
-          buttons[i].textContent = buttons[i].textContent.toLowerCase();
-        }
+    for (let i = 0; i < keyLetters.length; i++) {
+      if (keyLetters[i].textContent === keyLetters[i].textContent.toLowerCase()) {
+        keyLetters[i].textContent = keyLetters[i].textContent.toUpperCase();
+      } else {
+        keyLetters[i].textContent = keyLetters[i].textContent.toLowerCase();
       }
     }
   } if (el.classList.contains('key-enter')) {
     textWindow.textContent += '\n';
-  } if (el.classList.contains('key-shift')) {
-//  добавить пока зажата клавиша событие
-  } if (el.classList.contains('key-ctr')) {
+    return textWindow.textContent;
+  } if (el.classList.contains('key-ctr'  )) {
 
   } if (el.classList.contains('key-win')) {
 
@@ -182,124 +185,137 @@ function changeKeyboard(el, textWindow) {
 
   } if (el.classList.contains('key-left')) {
     textWindow.textContent += '←';
+    return textWindow.textContent;
   } if (el.classList.contains('key-top')) {
     textWindow.textContent += '↑';
+    return textWindow.textContent;
   } if (el.classList.contains('key-down')) {
     textWindow.textContent += '↓';
+    return textWindow.textContent;
   } if (el.classList.contains('key-right')) {
     textWindow.textContent += '→';
+    return textWindow.textContent;
   }
+}
+/*
+function keyEvents() {
+  document.addEventListener('keydown', (event) => {
+    if (event.key === 'Control') {
+      console.log(1)
+      runOnKeys()
+    } //else {
+      //changeKeyboard(event, textWindow, keyLetters);
+   // }
+  
+  
+    //console.log(event.key)
+  });
+
+}*/
+
+function changeLang() {
+  for (let i = 0; i < keySymbols.length; i++) {
+    if (lang) {
+      keySymbols[i].textContent = actualKeyboard.symbolsArrEn[i]
+      lang = false;
+    } else {
+      keySymbols[i].textContent = actualKeyboard.symbolsArrRu[i];
+      lang = true;
+    }
+  }
+}
+
+function runOnKeys(...args) {
+  console.log(11111111111111111)
+  const codes = ['AltLeft', 'ControlLeft', 'AltRight', 'ControlRight'];
+  let arrChars = [];
+  document.addEventListener("keydown", function (event) {
+      if (event.repeat) return;
+      arrChars.push(event.code);
+
+  });
+  document.addEventListener("keyup", function (event) {
+      if (arrChars.length == 0) return;
+      let runFunc = true;
+      for (let arg of args) {
+          if (!arrChars.includes(arg)) {
+              runFunc = false;
+              break;
+          }
+      }
+      if (runFunc) {
+        changeLang();
+      }
+      arrChars.length = 0;
+  });
+
+}
+
+
+
+
+function findLetters() {
+  let arr = [];
+  for (let i = 0; i < buttons.length; i++) {
+    if (actualKeyboard.lettrArr.includes(buttons[i].textContent)) {
+      arr.push(buttons[i]);
+    }
+  }
+  return arr;
+}
+
+function findSymbols() {
+  let arr = [];
+  for (let i = 0; i < buttons.length; i++) {
+    if (buttons[i].className.split(' ').length === 1) {
+      arr.push(buttons[i]);
+    }
+  }
+  return arr;
 }
 
 //  Add keyboard logic
 function addMessage() {
-  const textWindow = document.querySelector('.window__text');
   buttons.forEach((el) => {
     el.addEventListener('click', () => {
       const classes = el.className.split(' ');
       if (classes.length === 1) {
         textWindow.textContent += el.textContent;
       } else {
-        changeKeyboard(el, textWindow);
+        changeKeyboard(el, textWindow, keyLetters);
       }
     });
+
+    function addActionForShift() {
+      keyLetters.forEach((item) => {
+        const itm = item;
+        if (itm.textContent === itm.textContent.toLowerCase()) {
+          itm.textContent = itm.textContent.toUpperCase();
+        } else {
+          itm.textContent = itm.textContent.toLowerCase();
+        }
+      });
+    }
+
+    if (el.classList.contains('key-shift')) {
+      el.addEventListener('mousedown', () => {
+        addActionForShift();
+      });
+      el.addEventListener('mouseup', () => {
+        addActionForShift();
+      });
+    }
   });
 }
 
 window.addEventListener('load', () => {
   createPage();
   buttons = keyboard.querySelectorAll('.key');
-  addMessage()
+  keyLetters = findLetters();
+  keySymbols = findSymbols()
+  textWindow = document.querySelector('.window__text');
+  // keyEvents();
+  addMessage();
+  runOnKeys();
 });
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-/*
-function createPage() {
-  const main = createElement('main', 'main');
-  const window = createElement('section', 'window');
-  keyboard = createElement('section', 'keyboard');
-  createKeyBoardLines();
-  for (let i = 0; i < 5; i++) {
-    createKeys(i);
-  }
-  main.insertAdjacentElement('afterbegin', keyboard);
-  main.insertAdjacentElement('afterbegin', window);
-  window.insertAdjacentElement('afterbegin', createElement('p', 'window__text'));
-  body.insertAdjacentElement('afterbegin', main);
-
-  const lines = document.querySelectorAll('.keyboard__line');
-  const textWindow = document.querySelectorAll('.window__text');
-  let message = textWindow.textContent;
-  message = '';
-  for (let i = 0; i < 5; i++) {
-    addClassChar(i, lines[i]);
-  }
-  buttons = keyboard.querySelectorAll('.key');
-
-  //  Add keyboard logic
-  buttons.forEach((el) => {
-    el.addEventListener('click', () => {
-      const classes = el.className.split(' ')
-      if (classes.length === 1) {
-        message += el.textContent;
-        console.log(message)
-      }
-      if (el.classList.contains('key-backspace')) {
-        console.log('aaaaaaaaaaaaa')
-      }
-      if (el.classList.contains('key-backspace')) {
-        console.log('aaaaaaaaaaaaa')
-      }
-
-    });
-  });
-
-}
-
-
-
-const specialBtn = [
-  'key-backspace',
-  'key-tab',
-  'key-del',
-  'key-capsLock',
-  'key-enter',
-  'key-shift',
-  'key-ctr',
-  'key-win',
-  'key-alt',
-  'key-left',
-  'key-top',
-  'key-down',
-  'key-right',
-];
-
-window.addEventListener('load', () => {
-  createPage();
-});
-*/
-
-
-
 
