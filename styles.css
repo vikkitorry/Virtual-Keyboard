@@ -2,6 +2,7 @@ body {
   display: flex;
   width: 100vw;
   height: 100vh;
+  background-color: #111115e4;
 }
 
 main {
@@ -37,19 +38,33 @@ main {
 }
 
 .window__text {
-  font-size: 18px;
-  margin: 10px;
+  font-size: 24px;
+  margin: 1%;
   color: #fff;
+  line-height: 120%;
   text-shadow:
     0 0 1px #fff,
     0 0 1px #fff,
     0 0 3px #fff,
-    0 0 9px rgb(49, 84, 137),
-    0 0 9px rgb(186, 4, 4),
-    0 0 8px rgb(169, 7, 7),
-    0 0 8px rgb(169, 5, 5),
-    0 0 9px rgb(171, 6, 6);
-    letter-spacing: 1px;
+    0 0 4px rgb(49, 84, 137),
+    0 0 4px rgb(186, 4, 4),
+    0 0 4px rgb(169, 7, 7),
+    0 0 4px rgb(169, 5, 5),
+    0 0 4px rgb(171, 6, 6);
+  letter-spacing: 5px;
+  overflow-y: scroll;
+}
+
+.window__desc::after {
+  position: absolute;
+  top: 5%;
+  left: 35%;
+  content: "Keyboard created for Windows, Change language: ctr + alt";
+  font-size: 20px;
+  color: #390303;
+  padding: 5px;
+  border: 3px solid #390303;
+  border-radius: 5px;
 }
 
 .keyboard__line::after{
@@ -95,20 +110,18 @@ main {
 
 .key-capsLock, .key-shift {
   grid-column: 1 / 3;
-  font-size: 20px;
-  letter-spacing: 0.5px;
   border-radius: 10px;
 }
 
 .key-backspace, .key-shift-right, .key-enter {
   grid-column: 14 / 16;
-  font-size: 20px;
-  letter-spacing: 1px;
   border-radius: 10px;
 }
 
-.key-backspace {
-  font-size: 15px;
+.key-tab, .key-ctr,  .key-win, .key-alt, .key-del,
+.key-backspace, .key-shift, .key-capsLock, .key-enter{
+  font-size: 90%;
+  letter-spacing: 2px;
 }
 
 .key-space {
