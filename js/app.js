@@ -2,18 +2,18 @@ class Keyboard {
   constructor() {
     this.chars = {
       Backquote: ['`', 'ё', 'true'],
-      Digit1: ['1'],
-      Digit2: ['2'],
-      Digit3: ['3'],
-      Digit4: ['4'],
-      Digit5: ['5'],
-      Digit6: ['6'],
-      Digit7: ['7'],
-      Digit8: ['8'],
-      Digit9: ['9'],
-      Digit0: ['0'],
-      Minus: ['-'],
-      Equal: ['='],
+      Digit1: ['1', '1'],
+      Digit2: ['2', '2'],
+      Digit3: ['3', '3'],
+      Digit4: ['4', '4'],
+      Digit5: ['5', '5'],
+      Digit6: ['6', '6'],
+      Digit7: ['7', '7'],
+      Digit8: ['8', '8'],
+      Digit9: ['9', '9'],
+      Digit0: ['0', '0'],
+      Minus: ['-', '-'],
+      Equal: ['=', '='],
       Backspace: ['Backspace'],
       Tab: ['Tab'],
       KeyQ: ['q', 'й', 'true'],
@@ -54,16 +54,16 @@ class Keyboard {
       Comma: [',', 'б', 'true'],
       Period: ['.', 'ю', 'true'],
       Slash: ['/', '.', 'true'],
-      ArrowUp: [''],
+      ArrowUp: ['', ''],
       ShiftRight: ['Shift'],
       ControlLeft: ['Ctr'],
       MetaLeft: ['Win'],
       AltLeft: ['Alt'],
-      Space: [' '],
+      Space: [' ', ' '],
       AltRight: ['Alt'],
-      ArrowLeft: [''],
-      ArrowDown: [''],
-      ArrowRight: [''],
+      ArrowLeft: ['', ''],
+      ArrowDown: ['', ''],
+      ArrowRight: ['', ''],
       ControlRight: ['Ctr'],
     };
 /*
@@ -138,6 +138,7 @@ class Keyboard {
     this.isCaps = false;
     this.createPageStructure();
     this.keyboard;
+    this.isShift = false;
   }
 
   createPageStructure() {
@@ -151,7 +152,7 @@ class Keyboard {
     }
     main.insertAdjacentElement('afterbegin', this.keyboard);
     main.insertAdjacentElement('afterbegin', window);
-    window.insertAdjacentElement('afterbegin', this.createElm('pre', 'window__text'));
+    window.insertAdjacentElement('afterbegin', this.createElm('textarea', 'window__text'));
     body.insertAdjacentElement('afterbegin', main);
     body.insertAdjacentElement('afterbegin', this.createElm('div', 'window__desc'));
     const keys = document.querySelectorAll('.key');
@@ -185,7 +186,7 @@ class Keyboard {
     keys.forEach((el, i) => {
       el.setAttribute('id', keysObj[i]);
       const dataElm = this.chars[keysObj[i]]
-      if (dataElm[2]) {
+      if (dataElm[1]) {
         el.dataset.ru = dataElm[1];
         el.dataset.eng = dataElm[0];
         el.dataset.symbol = "true";
@@ -233,7 +234,7 @@ class Keyboard {
     this.addMessageByKeyDown(buttons, textWindow, symbolsArr);
   }
 
-  checkBtn(btnCode, textWindow, symbolsArr) {
+  checkBtn(btnCode, textWindow, symbolsArr, btn) {
     switch (btnCode) {
       case 'Backspace':
         textWindow.textContent = textWindow.textContent.slice(0, -1);
@@ -288,8 +289,8 @@ class Keyboard {
   addMessageByKeyDown(buttons, textWindow, symbolsArr) {
       document.addEventListener('keydown', (evt) => {
         if (this.keyboard.querySelector(`#${evt.code}`)) {
+          const item = this.keyboard.querySelector(`#${evt.code}`);
           setTimeout(() => {
-            const item = this.keyboard.querySelector(`#${evt.code}`);
             this.hightLightKey(item)
           })
         if ((evt.altKey && evt.ctrlKey)) {
@@ -302,6 +303,13 @@ class Keyboard {
             }
           })
           this.isLangRu = !this.isLangRu
+        } else if (evt.key === 'Shift') {
+          this.isShift = true;
+          this.addShiftAction(symbolsArr, true)
+        } else if (item.dataset.eng) {
+          textWindow.textContent += item.textContent
+        } else if (!item.dataset.eng) {
+          this.checkBtn(evt.code, textWindow, symbolsArr, item)
         }
         }
       })
@@ -312,9 +320,39 @@ class Keyboard {
           const item = this.keyboard.querySelector(`#${evt.code}`);
           this.delHightLightKey(item);
           })
+          if (evt.key === 'Shift') {
+            console.log(545656)
+            this.isShift = false;
+            this.addShiftAction(symbolsArr, false)
+          } 
         }
       })
   }
+//REFACTOR THIS CODE LATER START
+  addShiftAction(symbolsArr, isPressed) {
+    if (isPressed) {
+      if (this.isCaps) {
+        symbolsArr.forEach((item) => {
+          item.textContent = item.textContent.toLowerCase();
+      });
+      } else {
+        symbolsArr.forEach((item) => {
+          item.textContent = item.textContent.toUpperCase();
+      });
+      }
+    } else {
+      if (this.isCaps) {
+        symbolsArr.forEach((item) => {
+          item.textContent = item.textContent.toUpperCase();
+      });
+      } else {
+        symbolsArr.forEach((item) => {
+          item.textContent = item.textContent.toLowerCase();
+      });
+      }
+    }
+  }
+//REFACTOR THIS CODE LATER END
 
   hightLightKey(item) {
     item.classList.add('active')
