@@ -1,7 +1,7 @@
 class Keyboard {
   constructor() {
-    this.engLetters = {
-      Backquote: ['`', 'true'],
+    this.chars = {
+      Backquote: ['`', 'ё', 'true'],
       Digit1: ['1'],
       Digit2: ['2'],
       Digit3: ['3'],
@@ -16,44 +16,44 @@ class Keyboard {
       Equal: ['='],
       Backspace: ['Backspace'],
       Tab: ['Tab'],
-      KeyQ: ['q', 'true'],
-      KeyW: ['w', 'true'],
-      KeyE: ['e', 'true'],
-      KeyR: ['r', 'true'],
-      KeyT: ['t', 'true'],
-      KeyY: ['y', 'true'],
-      KeyU: ['u', 'true'],
-      KeyI: ['i', 'true'],
-      KeyO: ['o', 'true'],
-      KeyP: ['p', 'true'],
-      BracketLeft: ['[', 'true'],
-      BracketRight: [']', 'true'],
-      Backslash: ['\\', 'true'],
+      KeyQ: ['q', 'й', 'true'],
+      KeyW: ['w', 'ц', 'true'],
+      KeyE: ['e', 'у', 'true'],
+      KeyR: ['r', 'к', 'true'],
+      KeyT: ['t', 'е', 'true'],
+      KeyY: ['y', 'н', 'true'],
+      KeyU: ['u', 'г', 'true'],
+      KeyI: ['i', 'ш', 'true'],
+      KeyO: ['o', 'щ', 'true'],
+      KeyP: ['p', 'з', 'true'],
+      BracketLeft: ['[', 'х', 'true'],
+      BracketRight: [']', 'ъ', 'true'],
+      Backslash: ['\\', '/', 'true'],
       Delete: ['Del'],
       CapsLock: ['CapsLock'],
-      KeyA: ['a', 'true'],
-      KeyS: ['s', 'true'],
-      KeyD: ['d', 'true'],
-      KeyF: ['f', 'true'],
-      KeyG: ['g', 'true'],
-      KeyH: ['h', 'true'],
-      KeyJ: ['j', 'true'],
-      KeyK: ['k', 'true'],
-      KeyL: ['l', 'true'],
-      Semicolon: [';', 'true'],
-      Quote: ["'", 'true'],
+      KeyA: ['a', 'ф', 'true'],
+      KeyS: ['s', 'ы', 'true'],
+      KeyD: ['d', 'в', 'true'],
+      KeyF: ['f', 'а', 'true'],
+      KeyG: ['g', 'п', 'true'],
+      KeyH: ['h', 'р', 'true'],
+      KeyJ: ['j', 'о', 'true'],
+      KeyK: ['k', 'л', 'true'],
+      KeyL: ['l', 'д', 'true'],
+      Semicolon: [';', 'ж', 'true'],
+      Quote: ["'", 'э', 'true'],
       Enter: ['Enter'],
       ShiftLeft: ['Shift'],
-      KeyZ: ['z', 'true'],
-      KeyX: ['x', 'true'],
-      KeyC: ['c', 'true'],
-      KeyV: ['v', 'true'],
-      KeyB: ['b', 'true'],
-      KeyN: ['n', 'true'],
-      KeyM: ['m', 'true'],
-      Comma: [',', 'true'],
-      Period: ['.', 'true'],
-      Slash: ['/', 'true'],
+      KeyZ: ['z', 'я', 'true'],
+      KeyX: ['x', 'ч', 'true'],
+      KeyC: ['c', 'с', 'true'],
+      KeyV: ['v', 'м', 'true'],
+      KeyB: ['b', 'и', 'true'],
+      KeyN: ['n', 'т', 'true'],
+      KeyM: ['m', 'ь', 'true'],
+      Comma: [',', 'б', 'true'],
+      Period: ['.', 'ю', 'true'],
+      Slash: ['/', '.', 'true'],
       ArrowUp: [''],
       ShiftRight: ['Shift'],
       ControlLeft: ['Ctr'],
@@ -66,9 +66,9 @@ class Keyboard {
       ArrowRight: [''],
       ControlRight: ['Ctr'],
     };
-
+/*
     this.ruLetters = {
-      Backquote: ['ё', 'true'],
+      Backquote: ['ё', '', 'true'],
       Digit1: ['1'],
       Digit2: ['2'],
       Digit3: ['3'],
@@ -83,44 +83,44 @@ class Keyboard {
       Equal: ['='],
       Backspace: ['Backspace'],
       Tab: ['Tab'],
-      KeyQ: ['й', 'true'],
-      KeyW: ['ц', 'true'],
-      KeyE: ['у', 'true'],
-      KeyR: ['к', 'true'],
-      KeyT: ['е', 'true'],
-      KeyY: ['н', 'true'],
-      KeyU: ['г', 'true'],
-      KeyI: ['ш', 'true'],
-      KeyO: ['щ', 'true'],
-      KeyP: ['з', 'true'],
-      BracketLeft: ['х', 'true'],
-      BracketRight: ['ъ', 'true'],
-      Backslash: ['\\', 'true'],
+      KeyQ: ['й', '', 'true'],
+      KeyW: ['ц', '', 'true'],
+      KeyE: ['у', '', 'true'],
+      KeyR: ['к', '', 'true'],
+      KeyT: ['е', '', 'true'],
+      KeyY: ['н', '', 'true'],
+      KeyU: ['г', '', 'true'],
+      KeyI: ['ш', '', 'true'],
+      KeyO: ['щ', '', 'true'],
+      KeyP: ['з', '', 'true'],
+      BracketLeft: ['х', '', 'true'],
+      BracketRight: ['ъ', '', 'true'],
+      Backslash: ['\\', '', 'true'],
       Delete: ['Del'],
       CapsLock: ['CapsLock'],
-      KeyA: ['ф', 'true'],
-      KeyS: ['ы', 'true'],
-      KeyD: ['в', 'true'],
-      KeyF: ['а', 'true'],
-      KeyG: ['п', 'true'],
-      KeyH: ['р', 'true'],
-      KeyJ: ['о', 'true'],
-      KeyK: ['л', 'true'],
-      KeyL: ['д', 'true'],
-      Semicolon: ['ж', 'true'],
-      Quote: ['э', 'true'],
+      KeyA: ['ф', '', 'true'],
+      KeyS: ['ы', '', 'true'],
+      KeyD: ['в', '', 'true'],
+      KeyF: ['а', '', 'true'],
+      KeyG: ['п', '', 'true'],
+      KeyH: ['р', '', 'true'],
+      KeyJ: ['о', '', 'true'],
+      KeyK: ['л', '', 'true'],
+      KeyL: ['д', '', 'true'],
+      Semicolon: ['ж', '', 'true'],
+      Quote: ['э', '', 'true'],
       Enter: ['Enter'],
       ShiftLeft: 'Shift',
-      KeyZ: ['я', 'true'],
-      KeyX: ['ч', 'true'],
-      KeyC: ['с', 'true'],
-      KeyV: ['м', 'true'],
-      KeyB: ['и', 'true'],
-      KeyN: ['т', 'true'],
-      KeyM: ['ь', 'true'],
-      Comma: ['б', 'true'],
-      Period: ['ю', 'true'],
-      Slash: ['.', 'true'],
+      KeyZ: ['я', '', 'true'],
+      KeyX: ['ч', '', 'true'],
+      KeyC: ['с', '', 'true'],
+      KeyV: ['м', '', 'true'],
+      KeyB: ['и', '', 'true'],
+      KeyN: ['т', '', 'true'],
+      KeyM: ['ь', '', 'true'],
+      Comma: ['б', '', 'true'],
+      Period: ['ю', '', 'true'],
+      Slash: ['.', '', 'true'],
       ArrowUp: [''],
       ShiftRight: ['Shift'],
       ControlLeft: ['Ctr'],
@@ -133,8 +133,8 @@ class Keyboard {
       ArrowRight: [''],
       ControlRight: ['Ctr'],
     };
-
-    this.lang = 'ru';
+*/
+    this.isLangRu = JSON.parse(localStorage.getItem('lng')) || false;
     this.isCaps = false;
     this.createPageStructure();
     this.keyboard;
@@ -181,29 +181,34 @@ class Keyboard {
   }
 
   addIdContent(keys) {
-    const keysObj = Object.keys(this.engLetters);
+    const keysObj = Object.keys(this.chars);
     keys.forEach((el, i) => {
       el.setAttribute('id', keysObj[i]);
-      const dataElm = this.engLetters[keysObj[i]]
-      if (dataElm[1]) {
-        el.dataset.symbol = 'true';
+      const dataElm = this.chars[keysObj[i]]
+      if (dataElm[2]) {
+        el.dataset.ru = dataElm[1];
+        el.dataset.eng = dataElm[0];
+        el.dataset.symbol = "true";
       }
-      el.textContent = dataElm[0];
+      if (this.isLangRu) {
+        el.textContent = dataElm[1]
+      } else {
+        el.textContent = dataElm[0];
+      }
     });
-    
   }
 
   addMessage(buttons, textWindow) {
     const symbolsArr = document.querySelectorAll('[data-symbol="true"]')
     buttons.forEach((el) => {
       el.addEventListener('click', () => {
-        if (el.dataset.symbol) {
+        if (el.dataset.ru) {
           textWindow.textContent += el.textContent;
         } else {
           this.checkBtn(el.id, textWindow, symbolsArr)
         }
       });
-
+      
       function addActionForShift() {
         symbolsArr.forEach((item) => {
           if (item.textContent === item.textContent.toLowerCase()) {
@@ -216,7 +221,7 @@ class Keyboard {
         });
       }
 
-      if (el.id === 'ShiftLeft') {
+      if (el.id === 'ShiftLeft' || el.id === 'ShiftRight') {
         el.addEventListener('mousedown', () => {
           addActionForShift();
         });
@@ -225,10 +230,8 @@ class Keyboard {
         });
       }
     });
+    this.addMessageByKeyDown(buttons, textWindow, symbolsArr);
   }
-
-
-  
 
   checkBtn(btnCode, textWindow, symbolsArr) {
     switch (btnCode) {
@@ -273,6 +276,52 @@ class Keyboard {
     }
   }
 
+  changeLang() {
+    const lang = localStorage.getItem('lang');
+    if (this.isLangRu) {
+      localStorage.setItem('lang', 'en');
+    } else {
+      localStorage.setItem('lang', 'ru');
+    }
+  }
+
+  addMessageByKeyDown(buttons, textWindow, symbolsArr) {
+      document.addEventListener('keydown', (evt) => {
+        if (this.keyboard.querySelector(`#${evt.code}`)) {
+          setTimeout(() => {
+            const item = this.keyboard.querySelector(`#${evt.code}`);
+            this.hightLightKey(item)
+          })
+        if ((evt.altKey && evt.ctrlKey)) {
+          this.changeLang()
+          symbolsArr.forEach((btn, i) => {
+            if (this.isLangRu) {
+              btn.textContent = btn.dataset.eng
+            } else {
+              btn.textContent = btn.dataset.ru
+            }
+          })
+          this.isLangRu = !this.isLangRu
+        }
+        }
+      })
+
+      document.addEventListener('keyup', (evt) => {
+        if (this.keyboard.querySelector(`#${evt.code}`)) {
+          setTimeout(() => {
+          const item = this.keyboard.querySelector(`#${evt.code}`);
+          this.delHightLightKey(item);
+          })
+        }
+      })
+  }
+
+  hightLightKey(item) {
+    item.classList.add('active')
+  }
+  delHightLightKey(item) {
+    item.classList.remove('active')
+  }
 
 }
 
@@ -281,5 +330,6 @@ function createPage() {
 }
 
 window.addEventListener('load', () => {
+  const lang = JSON.parse(localStorage.getItem('lng'));
   createPage();
 });

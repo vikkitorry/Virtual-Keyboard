@@ -146,6 +146,15 @@ main {
   transform: scale(0.98)
 }
 
+.active {
+  transition: 0.2s;
+  box-shadow:
+  inset rgba(0, 0, 0, 0.7) 0 -8px 8px,
+  inset rgba(0, 0, 0, 0.7) 0 8px 8px,
+  rgba(0, 0, 0, 0.7) 0 8px 8px -8px;
+  transform: scale(0.98)
+}
+
 #ArrowDown:after, #ArrowLeft:after,
 #ArrowRight:after, #ArrowUp:after {
   content: "";
@@ -176,4 +185,10 @@ main {
   transform: rotate(-90deg);
 }
 
-
+@media screen and (max-width: 1024px){
+  #Tab, #ControlRight, #ControlLeft, #MetaLeft, #AltRight, #Delete,
+  #Backspace, #ShiftLeft, #CapsLock, #Enter, #ShiftRight, #AltLeft{
+  font-size: 60%;
+  letter-spacing: 0;
+  }
+}
