@@ -3,6 +3,7 @@ body {
   width: 100vw;
   height: 100vh;
   background-color: #111115e4;
+  flex-direction: column;
 }
 
 main {
@@ -55,10 +56,11 @@ main {
   overflow-y: scroll;
 }
 
+.window__desc {
+  margin: auto;
+}
+
 .window__desc::after {
-  position: absolute;
-  top: 5%;
-  left: 35%;
   content: "Keyboard created for Windows, Change language: ctr + alt";
   font-size: 20px;
   color: #390303;
@@ -108,23 +110,24 @@ main {
     rgba(0, 0, 0, 0.681) 0 3px 8px -3px;
 }
 
-.key-capsLock, .key-shift {
+#CapsLock, #ShiftLeft {
   grid-column: 1 / 3;
   border-radius: 10px;
 }
 
-.key-backspace, .key-shift-right, .key-enter {
+#Backspace, #ShiftRight, #Enter {
   grid-column: 14 / 16;
   border-radius: 10px;
 }
 
-.key-tab, .key-ctr,  .key-win, .key-alt, .key-del,
-.key-backspace, .key-shift, .key-capsLock, .key-enter{
+#Tab, #ControlRight, #ControlLeft, #MetaLeft, #AltRight, #ArrowLeft, #Delete,
+#Backspace, #ShiftLeft, #CapsLock, #Enter, #ShiftRight, #AltLeft{
   font-size: 90%;
   letter-spacing: 2px;
+  background-color: rgb(67, 85, 79);
 }
 
-.key-space {
+#Space {
   grid-column: 4 / 11;
   border-radius: 10px;
 }
@@ -143,7 +146,8 @@ main {
   transform: scale(0.98)
 }
 
-.key-arrow::after {
+#ArrowDown:after, #ArrowLeft:after,
+#ArrowRight:after, #ArrowUp:after {
   content: "";
   background: url(./icons/arrow.png) no-repeat center;
   width: 20px;
@@ -160,15 +164,16 @@ main {
   0 0 9px rgb(171, 6, 6);
 }
 
-.key-down::after {
+#ArrowDown::after {
   transform: rotate(90deg);
 }
 
-.key-left::after {
+#ArrowLeft::after {
   transform: rotate(180deg);
 }
 
-.key-top::after {
+#ArrowUp::after {
   transform: rotate(-90deg);
 }
+
 
