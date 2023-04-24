@@ -54,6 +54,7 @@ main {
     0 0 4px rgb(171, 6, 6);
   letter-spacing: 5px;
   overflow-y: scroll;
+  padding-left: 5px;
 }
 
 .window__desc {
@@ -120,11 +121,10 @@ main {
   border-radius: 10px;
 }
 
-#Tab, #ControlRight, #ControlLeft, #MetaLeft, #AltRight, #ArrowLeft, #Delete,
+#Tab, #ControlRight, #ControlLeft, #MetaLeft, #AltRight, #Delete,
 #Backspace, #ShiftLeft, #CapsLock, #Enter, #ShiftRight, #AltLeft{
   font-size: 90%;
   letter-spacing: 2px;
-  background-color: rgb(67, 85, 79);
 }
 
 #Space {
