@@ -2,11 +2,11 @@ class Keyboard {
   constructor() {
     this.chars = {
       Backquote: ['`', 'ё', 'true'],
-      Digit1: ['1', '1'],
-      Digit2: ['2', '2'],
-      Digit3: ['3', '3'],
-      Digit4: ['4', '4'],
-      Digit5: ['5', '5'],
+      'Digit1': ['1', '1'],
+      'Digit2': ['2', '2'],
+      'Digit3': ['3', '3'],
+      'Digit4': ['4', '4'],
+      'Digit5': ['5', '5'],
       Digit6: ['6', '6'],
       Digit7: ['7', '7'],
       Digit8: ['8', '8'],
@@ -14,8 +14,8 @@ class Keyboard {
       Digit0: ['0', '0'],
       Minus: ['-', '-'],
       Equal: ['=', '='],
-      Backspace: ['Backspace'],
-      Tab: ['Tab'],
+      Backspace: ['Backspace', 'Backspace'],
+      Tab: ['Tab', 'Tab'],
       KeyQ: ['q', 'й', 'true'],
       KeyW: ['w', 'ц', 'true'],
       KeyE: ['e', 'у', 'true'],
@@ -29,8 +29,8 @@ class Keyboard {
       BracketLeft: ['[', 'х', 'true'],
       BracketRight: [']', 'ъ', 'true'],
       Backslash: ['\\', '/', 'true'],
-      Delete: ['Del'],
-      CapsLock: ['CapsLock'],
+      Delete: ['Del', 'Del'],
+      CapsLock: ['CapsLock', 'CapsLock'],
       KeyA: ['a', 'ф', 'true'],
       KeyS: ['s', 'ы', 'true'],
       KeyD: ['d', 'в', 'true'],
@@ -42,8 +42,8 @@ class Keyboard {
       KeyL: ['l', 'д', 'true'],
       Semicolon: [';', 'ж', 'true'],
       Quote: ["'", 'э', 'true'],
-      Enter: ['Enter'],
-      ShiftLeft: ['Shift'],
+      Enter: ['Enter', 'Enter'],
+      ShiftLeft: ['Shift', 'Shift'],
       KeyZ: ['z', 'я', 'true'],
       KeyX: ['x', 'ч', 'true'],
       KeyC: ['c', 'с', 'true'],
@@ -55,16 +55,16 @@ class Keyboard {
       Period: ['.', 'ю', 'true'],
       Slash: ['/', '.', 'true'],
       ArrowUp: ['', ''],
-      ShiftRight: ['Shift'],
-      ControlLeft: ['Ctr'],
-      MetaLeft: ['Win'],
-      AltLeft: ['Alt'],
+      ShiftRight: ['Shift', 'Shift'],
+      ControlLeft: ['Ctr', 'Ctr'],
+      MetaLeft: ['Win', 'Win'],
+      AltLeft: ['Alt', 'Alt'],
       Space: [' ', ' '],
-      AltRight: ['Alt'],
+      AltRight: ['Alt', 'Alt'],
       ArrowLeft: ['', ''],
       ArrowDown: ['', ''],
       ArrowRight: ['', ''],
-      ControlRight: ['Ctr'],
+      ControlRight: ['Ctr', 'Ctr'],
     };
 
     this.isLangRu = JSON.parse(localStorage.getItem('lng')) || false;
@@ -119,14 +119,15 @@ class Keyboard {
     keys.forEach((elm, i) => {
       elm.setAttribute('id', keysObj[i]);
       const dataElm = this.chars[keysObj[i]];
-      if (dataElm[1]) {
+      if (dataElm[2]) {
         elm.dataset.ru = dataElm[1];
         elm.dataset.eng = dataElm[0];
         elm.dataset.symbol = 'true';
       }
-      if (this.isLangRu) {
+      if (localStorage.getItem('lang') === 'ru') {
         elm.textContent = dataElm[1]
       } else {
+        localStorage.getItem('lang', 'en');
         elm.textContent = dataElm[0];
       }
     });
@@ -232,17 +233,28 @@ class Keyboard {
           this.changeLang();
           symbolsArr.forEach((btn) => {
             if (this.isLangRu) {
-              btn.textContent = btn.dataset.eng;
+              if (this.isCaps) {
+                btn.textContent = btn.dataset.eng.toUpperCase()
+              }
+              if (!this.isCaps) {
+                btn.textContent = btn.dataset.eng.toLowerCase()
+              }
             } else {
-              btn.textContent = btn.dataset.ru;
+              if (this.isCaps) {
+                btn.textContent = btn.dataset.ru.toUpperCase()
+              }
+              if (!this.isCaps) {
+                btn.textContent = btn.dataset.ru.toLowerCase()
+              }
             }
           });
           this.isLangRu = !this.isLangRu;
         } else if (evt.key === 'Shift') {
           this.isShift = true;
           this.addShiftAction(symbolsArr, true);
-        } else if (item.dataset.eng) {
-          textWindow.textContent += item.textContent;
+        } else if (item.dataset.eng || item.id.slice(0,5) === 'Digit' ||
+        item.id.slice(0,5) === 'Minus' || item.id.slice(0,5) === 'Equal') {
+          return textWindow.textContent += item.textContent;
         } else if (!item.dataset.eng) {
           this.checkBtn(evt.code, textWindow, symbolsArr, item);
         }
@@ -262,7 +274,6 @@ class Keyboard {
       }
     });
   }
-  //  REFACTOR THIS CODE LATER START
 
   addShiftAction(symbolsArr, isPressed) {
     if (isPressed) {
@@ -303,6 +314,5 @@ function createPage() {
 }
 
 window.addEventListener('load', () => {
-  const lang = JSON.parse(localStorage.getItem('lng'));
   createPage();
 });
