@@ -2,16 +2,16 @@ class Keyboard {
   constructor() {
     this.chars = {
       Backquote: ['`', 'ё', 'true'],
-      Digit1: ['1', '1'],
-      Digit2: ['2', '2'],
-      Digit3: ['3', '3'],
-      Digit4: ['4', '4'],
-      Digit5: ['5', '5'],
-      Digit6: ['6', '6'],
-      Digit7: ['7', '7'],
-      Digit8: ['8', '8'],
-      Digit9: ['9', '9'],
-      Digit0: ['0', '0'],
+      Digit1: ['1', '!'],
+      Digit2: ['2', '@'],
+      Digit3: ['3', '#'],
+      Digit4: ['4', '$'],
+      Digit5: ['5', '%'],
+      Digit6: ['6', '^'],
+      Digit7: ['7', '&'],
+      Digit8: ['8', '*'],
+      Digit9: ['9', '('],
+      Digit0: ['0', ')'],
       Minus: ['-', '-'],
       Equal: ['=', '='],
       Backspace: ['Backspace', 'Backspace'],
@@ -72,6 +72,7 @@ class Keyboard {
     this.createPageStructure();
     this.keyboard;
     this.isShift = false;
+    this.numArr;
   }
 
   createPageStructure() {
@@ -90,6 +91,7 @@ class Keyboard {
     body.insertAdjacentElement('afterbegin', this.createElm('div', 'window__desc'));
     const keys = document.querySelectorAll('.key');
     const textWindow = document.querySelector('.window__text');
+    textWindow.disabled = 'disabled'
     this.addIdContent(keys);
     this.addMessage(keys, textWindow);
   }
@@ -130,14 +132,21 @@ class Keyboard {
         localStorage.getItem('lang', 'en');
         elm.textContent = dataElm[0];
       }
+      if (elm.id.slice(0,5) === 'Digit') {
+        elm.dataset.number = dataElm[0];
+        elm.dataset.shift = dataElm[1];
+        elm.textContent = dataElm[0];
+      }
     });
   }
 
   addMessage(buttons, textWindow) {
     const symbolsArr = document.querySelectorAll('[data-symbol="true"]');
+    this.numArr = document.querySelectorAll('[data-number]');
     buttons.forEach((el) => {
       el.addEventListener('click', () => {
-        if (el.dataset.ru) {
+        if (el.dataset.ru || el.id.slice(0,5) === 'Digit' ||
+        el.id.slice(0,5) === 'Minus' || el.id.slice(0,5) === 'Equal') {
           textWindow.textContent += el.textContent;
         } else {
           this.checkBtn(el.id, textWindow, symbolsArr);
@@ -178,7 +187,7 @@ class Keyboard {
         textWindow.textContent += ' ';
         break;
       case 'Delete':
-        textWindow.textContent = '';
+        textWindow.textContent = textWindow.textContent.slice(0, -1);
         break;
       case 'CapsLock':
         for (let i = 0; i < symbolsArr.length; i++) {
@@ -286,6 +295,9 @@ class Keyboard {
           item.textContent = item.textContent.toUpperCase();
         });
       }
+      this.numArr.forEach((item) => {
+        item.textContent = item.dataset.shift
+      })
     } else {
       if (this.isCaps) {
         symbolsArr.forEach((item) => {
@@ -297,6 +309,9 @@ class Keyboard {
           item.textContent = item.textContent.toLowerCase();
         });
       }
+      this.numArr.forEach((item) => {
+        item.textContent = item.dataset.number
+      })
     }
   }
 
