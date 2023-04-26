@@ -66,74 +66,7 @@ class Keyboard {
       ArrowRight: ['', ''],
       ControlRight: ['Ctr'],
     };
-/*
-    this.ruLetters = {
-      Backquote: ['ё', '', 'true'],
-      Digit1: ['1'],
-      Digit2: ['2'],
-      Digit3: ['3'],
-      Digit4: ['4'],
-      Digit5: ['5'],
-      Digit6: ['6'],
-      Digit7: ['7'],
-      Digit8: ['8'],
-      Digit9: ['9'],
-      Digit0: ['0'],
-      Minus: ['-'],
-      Equal: ['='],
-      Backspace: ['Backspace'],
-      Tab: ['Tab'],
-      KeyQ: ['й', '', 'true'],
-      KeyW: ['ц', '', 'true'],
-      KeyE: ['у', '', 'true'],
-      KeyR: ['к', '', 'true'],
-      KeyT: ['е', '', 'true'],
-      KeyY: ['н', '', 'true'],
-      KeyU: ['г', '', 'true'],
-      KeyI: ['ш', '', 'true'],
-      KeyO: ['щ', '', 'true'],
-      KeyP: ['з', '', 'true'],
-      BracketLeft: ['х', '', 'true'],
-      BracketRight: ['ъ', '', 'true'],
-      Backslash: ['\\', '', 'true'],
-      Delete: ['Del'],
-      CapsLock: ['CapsLock'],
-      KeyA: ['ф', '', 'true'],
-      KeyS: ['ы', '', 'true'],
-      KeyD: ['в', '', 'true'],
-      KeyF: ['а', '', 'true'],
-      KeyG: ['п', '', 'true'],
-      KeyH: ['р', '', 'true'],
-      KeyJ: ['о', '', 'true'],
-      KeyK: ['л', '', 'true'],
-      KeyL: ['д', '', 'true'],
-      Semicolon: ['ж', '', 'true'],
-      Quote: ['э', '', 'true'],
-      Enter: ['Enter'],
-      ShiftLeft: 'Shift',
-      KeyZ: ['я', '', 'true'],
-      KeyX: ['ч', '', 'true'],
-      KeyC: ['с', '', 'true'],
-      KeyV: ['м', '', 'true'],
-      KeyB: ['и', '', 'true'],
-      KeyN: ['т', '', 'true'],
-      KeyM: ['ь', '', 'true'],
-      Comma: ['б', '', 'true'],
-      Period: ['ю', '', 'true'],
-      Slash: ['.', '', 'true'],
-      ArrowUp: [''],
-      ShiftRight: ['Shift'],
-      ControlLeft: ['Ctr'],
-      MetaLeft: ['Win'],
-      AltLeft: ['Alt'],
-      Space: [' '],
-      AltRight: ['Alt'],
-      ArrowLeft: [''],
-      ArrowDown: [''],
-      ArrowRight: [''],
-      ControlRight: ['Ctr'],
-    };
-*/
+
     this.isLangRu = JSON.parse(localStorage.getItem('lng')) || false;
     this.isCaps = false;
     this.createPageStructure();
@@ -157,8 +90,8 @@ class Keyboard {
     body.insertAdjacentElement('afterbegin', this.createElm('div', 'window__desc'));
     const keys = document.querySelectorAll('.key');
     const textWindow = document.querySelector('.window__text');
-    this.addIdContent(keys)
-    this.addMessage(keys, textWindow)
+    this.addIdContent(keys);
+    this.addMessage(keys, textWindow);
   }
 
   createElm(element, className) {
@@ -183,41 +116,39 @@ class Keyboard {
 
   addIdContent(keys) {
     const keysObj = Object.keys(this.chars);
-    keys.forEach((el, i) => {
-      el.setAttribute('id', keysObj[i]);
-      const dataElm = this.chars[keysObj[i]]
+    keys.forEach((elm, i) => {
+      elm.setAttribute('id', keysObj[i]);
+      const dataElm = this.chars[keysObj[i]];
       if (dataElm[1]) {
-        el.dataset.ru = dataElm[1];
-        el.dataset.eng = dataElm[0];
-        el.dataset.symbol = "true";
+        elm.dataset.ru = dataElm[1];
+        elm.dataset.eng = dataElm[0];
+        elm.dataset.symbol = 'true';
       }
       if (this.isLangRu) {
-        el.textContent = dataElm[1]
+        elm.textContent = dataElm[1]
       } else {
-        el.textContent = dataElm[0];
+        elm.textContent = dataElm[0];
       }
     });
   }
 
   addMessage(buttons, textWindow) {
-    const symbolsArr = document.querySelectorAll('[data-symbol="true"]')
+    const symbolsArr = document.querySelectorAll('[data-symbol="true"]');
     buttons.forEach((el) => {
       el.addEventListener('click', () => {
         if (el.dataset.ru) {
           textWindow.textContent += el.textContent;
         } else {
-          this.checkBtn(el.id, textWindow, symbolsArr)
+          this.checkBtn(el.id, textWindow, symbolsArr);
         }
       });
-      
+
       function addActionForShift() {
         symbolsArr.forEach((item) => {
           if (item.textContent === item.textContent.toLowerCase()) {
             item.textContent = item.textContent.toUpperCase();
-            console.log(1)
           } else {
             item.textContent = item.textContent.toLowerCase();
-            console.log(111)
           }
         });
       }
@@ -231,10 +162,10 @@ class Keyboard {
         });
       }
     });
-    this.addMessageByKeyDown(buttons, textWindow, symbolsArr);
+    this.addMessageByKeyDown(textWindow, symbolsArr);
   }
 
-  checkBtn(btnCode, textWindow, symbolsArr, btn) {
+  checkBtn(btnCode, textWindow, symbolsArr) {
     switch (btnCode) {
       case 'Backspace':
         textWindow.textContent = textWindow.textContent.slice(0, -1);
@@ -247,7 +178,7 @@ class Keyboard {
         break;
       case 'Delete':
         textWindow.textContent = '';
-      break;
+        break;
       case 'CapsLock':
         for (let i = 0; i < symbolsArr.length; i++) {
           if (!this.isCaps) {
@@ -257,22 +188,22 @@ class Keyboard {
           }
         }
         this.isCaps = !this.isCaps
-      break;
+        break;
       case 'Enter':
         textWindow.textContent += '\n';
-      break;
+        break;
       case 'ArrowUp':
         textWindow.textContent += '↑';
-      break;
+        break;
       case 'ArrowDown':
         textWindow.textContent += '↓';
-      break;
+        break;
       case 'ArrowRight':
         textWindow.textContent += '→';
-      break;
+        break;
       case 'ArrowLeft':
         textWindow.textContent += '←';
-      break;
+        break;
       default:
     }
   }
@@ -286,81 +217,85 @@ class Keyboard {
     }
   }
 
-  addMessageByKeyDown(buttons, textWindow, symbolsArr) {
-      document.addEventListener('keydown', (evt) => {
-        if (this.keyboard.querySelector(`#${evt.code}`)) {
-          const item = this.keyboard.querySelector(`#${evt.code}`);
-          setTimeout(() => {
-            this.hightLightKey(item)
-          })
+  addMessageByKeyDown(textWindow, symbolsArr) {
+    document.addEventListener('keydown', (evt) => {
+      if (this.keyboard.querySelector(`#${evt.code}`)) {
+        const item = this.keyboard.querySelector(`#${evt.code}`);
+        setTimeout(() => {
+          this.hightLightKey(item);
+        });
+        if (evt.code === 'Tab') {
+          evt.preventDefault();
+          textWindow.textContent += '    ';
+        }
         if ((evt.altKey && evt.ctrlKey)) {
-          this.changeLang()
-          symbolsArr.forEach((btn, i) => {
+          this.changeLang();
+          symbolsArr.forEach((btn) => {
             if (this.isLangRu) {
-              btn.textContent = btn.dataset.eng
+              btn.textContent = btn.dataset.eng;
             } else {
-              btn.textContent = btn.dataset.ru
+              btn.textContent = btn.dataset.ru;
             }
-          })
-          this.isLangRu = !this.isLangRu
+          });
+          this.isLangRu = !this.isLangRu;
         } else if (evt.key === 'Shift') {
           this.isShift = true;
-          this.addShiftAction(symbolsArr, true)
+          this.addShiftAction(symbolsArr, true);
         } else if (item.dataset.eng) {
-          textWindow.textContent += item.textContent
+          textWindow.textContent += item.textContent;
         } else if (!item.dataset.eng) {
-          this.checkBtn(evt.code, textWindow, symbolsArr, item)
+          this.checkBtn(evt.code, textWindow, symbolsArr, item);
         }
-        }
-      })
+      }
+    });
 
-      document.addEventListener('keyup', (evt) => {
-        if (this.keyboard.querySelector(`#${evt.code}`)) {
-          setTimeout(() => {
+    document.addEventListener('keyup', (evt) => {
+      if (this.keyboard.querySelector(`#${evt.code}`)) {
+        setTimeout(() => {
           const item = this.keyboard.querySelector(`#${evt.code}`);
           this.delHightLightKey(item);
-          })
-          if (evt.key === 'Shift') {
-            console.log(545656)
-            this.isShift = false;
-            this.addShiftAction(symbolsArr, false)
-          } 
+        });
+        if (evt.key === 'Shift') {
+          this.isShift = false;
+          this.addShiftAction(symbolsArr, false);
         }
-      })
+      }
+    });
   }
-//REFACTOR THIS CODE LATER START
+  //  REFACTOR THIS CODE LATER START
+
   addShiftAction(symbolsArr, isPressed) {
     if (isPressed) {
       if (this.isCaps) {
         symbolsArr.forEach((item) => {
           item.textContent = item.textContent.toLowerCase();
-      });
+        });
       } else {
         symbolsArr.forEach((item) => {
           item.textContent = item.textContent.toUpperCase();
-      });
+        });
       }
     } else {
       if (this.isCaps) {
         symbolsArr.forEach((item) => {
           item.textContent = item.textContent.toUpperCase();
-      });
-      } else {
+        });
+      }
+      if (!this.isCaps) {
         symbolsArr.forEach((item) => {
           item.textContent = item.textContent.toLowerCase();
-      });
+        });
       }
     }
   }
-//REFACTOR THIS CODE LATER END
 
   hightLightKey(item) {
-    item.classList.add('active')
-  }
-  delHightLightKey(item) {
-    item.classList.remove('active')
+    item.classList.add('active');
   }
 
+  delHightLightKey(item) {
+    item.classList.remove('active');
+  }
 }
 
 function createPage() {

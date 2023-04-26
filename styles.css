@@ -2,7 +2,8 @@ body {
   display: flex;
   width: 100vw;
   height: 100vh;
-  background-color: #111115e4;
+  background: url(./icons/22.jpg) no-repeat;
+  background-size: cover;
   flex-direction: column;
 }
 
@@ -21,9 +22,9 @@ main {
   background-color: rgba(20, 14, 14, 0.86);
   border-radius: 10px;
   box-shadow:
-   inset rgba(0, 0, 0, 0.555) 0 -3px 8px,
-   inset rgba(36, 36, 36, 0.53) 0 3px 8px,
-   rgba(0, 0, 0, 0.681) 0 3px 8px -3px;
+   inset rgba(0, 0, 0, 0.755) 0 -3px 8px,
+   inset rgba(36, 36, 36, 0.73) 0 3px 8px,
+   rgba(0, 0, 0, 0.781) 0 3px 8px -3px;
 }
 
 .keyboard {
@@ -70,8 +71,10 @@ main {
 .window__desc::after {
   content: "Keyboard created for Windows, Change language: ctr + alt";
   font-size: 20px;
-  color: #390303;
+  /*color: #390303;*/
+  color: #191919;
   padding: 5px;
+  font-weight: 600;
   border: 3px solid #390303;
   border-radius: 5px;
 }
@@ -196,5 +199,9 @@ main {
   #Backspace, #ShiftLeft, #CapsLock, #Enter, #ShiftRight, #AltLeft{
   font-size: 60%;
   letter-spacing: 0;
+  }
+  .window__desc::after {
+    font-size: 14px;
+    color: #ffffff;
   }
 }
