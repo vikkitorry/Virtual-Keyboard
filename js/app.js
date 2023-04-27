@@ -91,7 +91,7 @@ class Keyboard {
     body.insertAdjacentElement('afterbegin', this.createElm('div', 'window__desc'));
     const keys = document.querySelectorAll('.key');
     const textWindow = document.querySelector('.window__text');
-    textWindow.disabled = 'disabled'
+    //textWindow.disabled = 'disabled'
     this.addIdContent(keys);
     this.addMessage(keys, textWindow);
   }
@@ -147,7 +147,7 @@ class Keyboard {
       el.addEventListener('click', () => {
         if (el.dataset.ru || el.id.slice(0,5) === 'Digit' ||
         el.id.slice(0,5) === 'Minus' || el.id.slice(0,5) === 'Equal') {
-          textWindow.textContent += el.textContent;
+          textWindow.value += el.textContent;
         } else {
           this.checkBtn(el.id, textWindow, symbolsArr);
         }
@@ -176,18 +176,29 @@ class Keyboard {
   }
 
   checkBtn(btnCode, textWindow, symbolsArr) {
+    const start = textWindow.selectionStart;
     switch (btnCode) {
       case 'Backspace':
-        textWindow.textContent = textWindow.textContent.slice(0, -1);
+        textWindow.focus();
+        if (start > 0) {
+          textWindow.value = textWindow.value.slice(0, start -1) + textWindow.value.slice(start);
+          textWindow.selectionStart = start - 1;
+          textWindow.selectionEnd = start - 1;
+        }
         break;
       case 'Tab':
-        textWindow.textContent += '    ';
+        textWindow.value += '    ';
         break;
       case 'Space':
-        textWindow.textContent += ' ';
+        textWindow.value += ' ';
         break;
       case 'Delete':
-        textWindow.textContent = textWindow.textContent.slice(0, -1);
+        textWindow.focus();
+        if (start < textWindow.value.length) {
+          textWindow.value = textWindow.value.slice(0, start) + textWindow.value.slice(start + 1);
+          textWindow.selectionStart = start;
+          textWindow.selectionEnd = start;
+        }
         break;
       case 'CapsLock':
         for (let i = 0; i < symbolsArr.length; i++) {
@@ -200,19 +211,19 @@ class Keyboard {
         this.isCaps = !this.isCaps
         break;
       case 'Enter':
-        textWindow.textContent += '\n';
+        textWindow.value += '\n';
         break;
       case 'ArrowUp':
-        textWindow.textContent += '↑';
+        textWindow.value += '↑';
         break;
       case 'ArrowDown':
-        textWindow.textContent += '↓';
+        textWindow.value += '↓';
         break;
       case 'ArrowRight':
-        textWindow.textContent += '→';
+        textWindow.value += '→';
         break;
       case 'ArrowLeft':
-        textWindow.textContent += '←';
+        textWindow.value += '←';
         break;
       default:
     }
@@ -229,14 +240,14 @@ class Keyboard {
 
   addMessageByKeyDown(textWindow, symbolsArr) {
     document.addEventListener('keydown', (evt) => {
+      evt.preventDefault();
       if (this.keyboard.querySelector(`#${evt.code}`)) {
         const item = this.keyboard.querySelector(`#${evt.code}`);
         setTimeout(() => {
           this.hightLightKey(item);
         });
         if (evt.code === 'Tab') {
-          evt.preventDefault();
-          textWindow.textContent += '    ';
+          textWindow.value += '    ';
         }
         if ((evt.altKey && evt.ctrlKey)) {
           this.changeLang();
@@ -263,9 +274,9 @@ class Keyboard {
           this.addShiftAction(symbolsArr, true);
         } else if (item.dataset.eng || item.id.slice(0,5) === 'Digit' ||
         item.id.slice(0,5) === 'Minus' || item.id.slice(0,5) === 'Equal') {
-          return textWindow.textContent += item.textContent;
+          textWindow.value += item.textContent;
         } else if (!item.dataset.eng) {
-          this.checkBtn(evt.code, textWindow, symbolsArr, item);
+          this.checkBtn(evt.code, textWindow, symbolsArr);
         }
       }
     });
