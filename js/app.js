@@ -240,7 +240,9 @@ class Keyboard {
 
   addMessageByKeyDown(textWindow, symbolsArr) {
     document.addEventListener('keydown', (evt) => {
-      evt.preventDefault();
+      if (evt.code !== 'F12') {
+        evt.preventDefault();
+      }
       if (this.keyboard.querySelector(`#${evt.code}`)) {
         const item = this.keyboard.querySelector(`#${evt.code}`);
         setTimeout(() => {
