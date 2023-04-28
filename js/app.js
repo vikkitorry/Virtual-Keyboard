@@ -1,3 +1,17 @@
+function hightLightKey(item) {
+  item.classList.add('active');
+}
+
+function delHightLightKey(item) {
+  item.classList.remove('active');
+}
+
+function createElm(element, className) {
+  const item = document.createElement(element);
+  item.classList.add(className);
+  return item;
+}
+
 class Keyboard {
   constructor() {
     this.chars = {
@@ -70,91 +84,87 @@ class Keyboard {
     this.isLangRu = JSON.parse(localStorage.getItem('lng')) || false;
     this.isCaps = false;
     this.createPageStructure();
-    this.keyboard;
     this.isShift = false;
-    this.numArr;
   }
 
   createPageStructure() {
     const body = document.querySelector('body');
-    const main = this.createElm('main', 'main');
-    const window = this.createElm('section', 'window');
-    this.keyboard = this.createElm('section', 'keyboard');
+    const main = createElm('main', 'main');
+    const window = createElm('section', 'window');
+    this.keyboard = createElm('section', 'keyboard');
     this.createKeyBoardLines();
-    for (let i = 0; i < 5; i++) {
+    for (let i = 0; i < 5; i += 1) {
       this.createKeys(i);
     }
     main.insertAdjacentElement('afterbegin', this.keyboard);
     main.insertAdjacentElement('afterbegin', window);
-    window.insertAdjacentElement('afterbegin', this.createElm('textarea', 'window__text'));
+    window.insertAdjacentElement('afterbegin', createElm('textarea', 'window__text'));
     body.insertAdjacentElement('afterbegin', main);
-    body.insertAdjacentElement('afterbegin', this.createElm('div', 'window__desc'));
+    body.insertAdjacentElement('afterbegin', createElm('div', 'window__desc'));
     const keys = document.querySelectorAll('.key');
     const textWindow = document.querySelector('.window__text');
-    //textWindow.disabled = 'disabled'
     this.addIdContent(keys);
     this.addMessage(keys, textWindow);
   }
 
-  createElm(element, className) {
-    const item = document.createElement(element);
-    item.classList.add(className);
-    return item;
-  }
-
   createKeyBoardLines() {
-    for (let i = 0; i < 5; i++) {
-      this.keyboard.insertAdjacentElement('afterbegin', this.createElm('div', 'keyboard__line'));
+    for (let i = 0; i < 5; i += 1) {
+      this.keyboard.insertAdjacentElement('afterbegin', createElm('div', 'keyboard__line'));
     }
   }
 
   createKeys(counter) {
     const keyboardNodes = this.keyboard.childNodes;
     const lineLength = [14, 15, 13, 13, 9];
-    for (let i = 0; i < lineLength[counter]; i++) {
-      keyboardNodes[counter].insertAdjacentElement('beforeend', this.createElm('div', 'key'))
+    for (let i = 0; i < lineLength[counter]; i += 1) {
+      keyboardNodes[counter].insertAdjacentElement('beforeend', createElm('div', 'key'));
     }
   }
 
   addIdContent(keys) {
     const keysObj = Object.keys(this.chars);
-    keys.forEach((elm, i) => {
+    keys.forEach((element, i) => {
+      const elm = element;
       elm.setAttribute('id', keysObj[i]);
       const dataElm = this.chars[keysObj[i]];
+      const en = dataElm[0];
+      const rus = dataElm[1];
       if (dataElm[2]) {
-        elm.dataset.ru = dataElm[1];
-        elm.dataset.eng = dataElm[0];
+        elm.dataset.ru = rus;
+        elm.dataset.eng = en;
         elm.dataset.symbol = 'true';
       }
       if (localStorage.getItem('lang') === 'ru') {
-        elm.textContent = dataElm[1]
+        elm.textContent = rus;
       } else {
         localStorage.getItem('lang', 'en');
-        elm.textContent = dataElm[0];
+        elm.textContent = en;
       }
-      if (elm.id.slice(0,5) === 'Digit') {
-        elm.dataset.number = dataElm[0];
-        elm.dataset.shift = dataElm[1];
-        elm.textContent = dataElm[0];
+      if (elm.id.slice(0, 5) === 'Digit') {
+        elm.dataset.number = en;
+        elm.dataset.shift = rus;
+        elm.textContent = en;
       }
     });
   }
 
   addMessage(buttons, textWindow) {
+    const disp = textWindow;
     const symbolsArr = document.querySelectorAll('[data-symbol="true"]');
     this.numArr = document.querySelectorAll('[data-number]');
     buttons.forEach((el) => {
       el.addEventListener('click', () => {
-        if (el.dataset.ru || el.id.slice(0,5) === 'Digit' ||
-        el.id.slice(0,5) === 'Minus' || el.id.slice(0,5) === 'Equal') {
-          textWindow.value += el.textContent;
+        if (el.dataset.ru || el.id.slice(0, 5) === 'Digit'
+         || el.id.slice(0, 5) === 'Minus' || el.id.slice(0, 5) === 'Equal') {
+          disp.value += el.textContent;
         } else {
           this.checkBtn(el.id, textWindow, symbolsArr);
         }
       });
 
       function addActionForShift() {
-        symbolsArr.forEach((item) => {
+        symbolsArr.forEach((elm) => {
+          const item = elm;
           if (item.textContent === item.textContent.toLowerCase()) {
             item.textContent = item.textContent.toUpperCase();
           } else {
@@ -176,61 +186,62 @@ class Keyboard {
   }
 
   checkBtn(btnCode, textWindow, symbolsArr) {
+    const displayMsg = textWindow;
     const start = textWindow.selectionStart;
     switch (btnCode) {
       case 'Backspace':
         textWindow.focus();
         if (start > 0) {
-          textWindow.value = textWindow.value.slice(0, start -1) + textWindow.value.slice(start);
-          textWindow.selectionStart = start - 1;
-          textWindow.selectionEnd = start - 1;
+          displayMsg.value = textWindow.value.slice(0, start - 1) + textWindow.value.slice(start);
+          displayMsg.selectionStart = start - 1;
+          displayMsg.selectionEnd = start - 1;
         }
         break;
       case 'Tab':
-        textWindow.value += '    ';
+        displayMsg.value += '    ';
         break;
       case 'Space':
-        textWindow.value += ' ';
+        displayMsg.value += ' ';
         break;
       case 'Delete':
         textWindow.focus();
         if (start < textWindow.value.length) {
-          textWindow.value = textWindow.value.slice(0, start) + textWindow.value.slice(start + 1);
-          textWindow.selectionStart = start;
-          textWindow.selectionEnd = start;
+          displayMsg.value = textWindow.value.slice(0, start) + textWindow.value.slice(start + 1);
+          displayMsg.selectionStart = start;
+          displayMsg.selectionEnd = start;
         }
         break;
       case 'CapsLock':
-        for (let i = 0; i < symbolsArr.length; i++) {
+        for (let i = 0; i < symbolsArr.length; i += 1) {
+          const arr = symbolsArr;
           if (!this.isCaps) {
-            symbolsArr[i].textContent = symbolsArr[i].textContent.toUpperCase();
+            arr[i].textContent = symbolsArr[i].textContent.toUpperCase();
           } else {
-            symbolsArr[i].textContent = symbolsArr[i].textContent.toLowerCase();
+            arr[i].textContent = symbolsArr[i].textContent.toLowerCase();
           }
         }
-        this.isCaps = !this.isCaps
+        this.isCaps = !this.isCaps;
         break;
       case 'Enter':
-        textWindow.value += '\n';
+        displayMsg.value += '\n';
         break;
       case 'ArrowUp':
-        textWindow.value += '↑';
+        displayMsg.value += '↑';
         break;
       case 'ArrowDown':
-        textWindow.value += '↓';
+        displayMsg.value += '↓';
         break;
       case 'ArrowRight':
-        textWindow.value += '→';
+        displayMsg.value += '→';
         break;
       case 'ArrowLeft':
-        textWindow.value += '←';
+        displayMsg.value += '←';
         break;
       default:
     }
   }
 
   changeLang() {
-    const lang = localStorage.getItem('lang');
     if (this.isLangRu) {
       localStorage.setItem('lang', 'en');
     } else {
@@ -239,6 +250,7 @@ class Keyboard {
   }
 
   addMessageByKeyDown(textWindow, symbolsArr) {
+    const display = textWindow;
     document.addEventListener('keydown', (evt) => {
       if (evt.code !== 'F12') {
         evt.preventDefault();
@@ -246,27 +258,28 @@ class Keyboard {
       if (this.keyboard.querySelector(`#${evt.code}`)) {
         const item = this.keyboard.querySelector(`#${evt.code}`);
         setTimeout(() => {
-          this.hightLightKey(item);
+          hightLightKey(item);
         });
         if (evt.code === 'Tab') {
-          textWindow.value += '    ';
+          display.value += '    ';
         }
         if ((evt.altKey && evt.ctrlKey)) {
           this.changeLang();
-          symbolsArr.forEach((btn) => {
+          symbolsArr.forEach((button) => {
+            const btn = button;
             if (this.isLangRu) {
               if (this.isCaps) {
-                btn.textContent = btn.dataset.eng.toUpperCase()
+                btn.textContent = btn.dataset.eng.toUpperCase();
               }
               if (!this.isCaps) {
-                btn.textContent = btn.dataset.eng.toLowerCase()
+                btn.textContent = btn.dataset.eng.toLowerCase();
               }
             } else {
               if (this.isCaps) {
-                btn.textContent = btn.dataset.ru.toUpperCase()
+                btn.textContent = btn.dataset.ru.toUpperCase();
               }
               if (!this.isCaps) {
-                btn.textContent = btn.dataset.ru.toLowerCase()
+                btn.textContent = btn.dataset.ru.toLowerCase();
               }
             }
           });
@@ -274,9 +287,9 @@ class Keyboard {
         } else if (evt.key === 'Shift') {
           this.isShift = true;
           this.addShiftAction(symbolsArr, true);
-        } else if (item.dataset.eng || item.id.slice(0,5) === 'Digit' ||
-        item.id.slice(0,5) === 'Minus' || item.id.slice(0,5) === 'Equal') {
-          textWindow.value += item.textContent;
+        } else if (item.dataset.eng || item.id.slice(0, 5) === 'Digit'
+        || item.id.slice(0, 5) === 'Minus' || item.id.slice(0, 5) === 'Equal') {
+          display.value += item.textContent;
         } else if (!item.dataset.eng) {
           this.checkBtn(evt.code, textWindow, symbolsArr);
         }
@@ -287,7 +300,7 @@ class Keyboard {
       if (this.keyboard.querySelector(`#${evt.code}`)) {
         setTimeout(() => {
           const item = this.keyboard.querySelector(`#${evt.code}`);
-          this.delHightLightKey(item);
+          delHightLightKey(item);
         });
         if (evt.key === 'Shift') {
           this.isShift = false;
@@ -299,41 +312,31 @@ class Keyboard {
 
   addShiftAction(symbolsArr, isPressed) {
     if (isPressed) {
-      if (this.isCaps) {
-        symbolsArr.forEach((item) => {
+      symbolsArr.forEach((char) => {
+        const item = char;
+        if (this.isCaps) {
           item.textContent = item.textContent.toLowerCase();
-        });
-      } else {
-        symbolsArr.forEach((item) => {
+        } else if (!this.isCaps) {
           item.textContent = item.textContent.toUpperCase();
-        });
-      }
-      this.numArr.forEach((item) => {
-        item.textContent = item.dataset.shift
-      })
-    } else {
-      if (this.isCaps) {
-        symbolsArr.forEach((item) => {
-          item.textContent = item.textContent.toUpperCase();
-        });
-      }
-      if (!this.isCaps) {
-        symbolsArr.forEach((item) => {
-          item.textContent = item.textContent.toLowerCase();
-        });
-      }
-      this.numArr.forEach((item) => {
-        item.textContent = item.dataset.number
-      })
+        }
+      });
+      this.numArr.forEach((e) => {
+        e.textContent = e.dataset.shift;
+      });
     }
-  }
-
-  hightLightKey(item) {
-    item.classList.add('active');
-  }
-
-  delHightLightKey(item) {
-    item.classList.remove('active');
+    if (!isPressed) {
+      symbolsArr.forEach((char) => {
+        const item = char;
+        if (this.isCaps) {
+          item.textContent = char.textContent.toUpperCase();
+        } else if (!this.isCaps) {
+          item.textContent = char.textContent.toLowerCase();
+        }
+      });
+      this.numArr.forEach((e) => {
+        e.textContent = e.dataset.number;
+      });
+    }
   }
 }
 
