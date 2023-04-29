@@ -1,8 +1,8 @@
-function hightLightKey(item) {
+function addKeyEffect(item) {
   item.classList.add('active');
 }
 
-function delHightLightKey(item) {
+function delKeyEffect(item) {
   item.classList.remove('active');
 }
 
@@ -81,10 +81,8 @@ class Keyboard {
       ControlRight: ['Ctr', 'Ctr'],
     };
 
-    this.isLangRu = JSON.parse(localStorage.getItem('lng')) || false;
     this.isCaps = false;
     this.createPageStructure();
-    this.isShift = false;
   }
 
   createPageStructure() {
@@ -101,10 +99,15 @@ class Keyboard {
     window.insertAdjacentElement('afterbegin', createElm('textarea', 'window__text'));
     body.insertAdjacentElement('afterbegin', main);
     body.insertAdjacentElement('afterbegin', createElm('div', 'window__desc'));
-    const keys = document.querySelectorAll('.key');
-    const textWindow = document.querySelector('.window__text');
-    this.addIdContent(keys);
-    this.addMessage(keys, textWindow);
+    this.keys = document.querySelectorAll('.key');
+    this.addIdContent();
+    this.createvariables();
+    this.addMessage();
+  }
+
+  createvariables() {
+    this.textWindow = document.querySelector('.window__text');
+    this.symbolsArr = document.querySelectorAll('[data-symbol="true"]');
   }
 
   createKeyBoardLines() {
@@ -121,9 +124,9 @@ class Keyboard {
     }
   }
 
-  addIdContent(keys) {
+  addIdContent() {
     const keysObj = Object.keys(this.chars);
-    keys.forEach((element, i) => {
+    this.keys.forEach((element, i) => {
       const elm = element;
       elm.setAttribute('id', keysObj[i]);
       const dataElm = this.chars[keysObj[i]];
@@ -137,7 +140,6 @@ class Keyboard {
       if (localStorage.getItem('lang') === 'ru') {
         elm.textContent = rus;
       } else {
-        localStorage.getItem('lang', 'en');
         elm.textContent = en;
       }
       if (elm.id.slice(0, 5) === 'Digit') {
@@ -148,94 +150,80 @@ class Keyboard {
     });
   }
 
-  addMessage(buttons, textWindow) {
-    const disp = textWindow;
-    const symbolsArr = document.querySelectorAll('[data-symbol="true"]');
-    this.numArr = document.querySelectorAll('[data-number]');
-    buttons.forEach((el) => {
+  addMessage() {
+    this.keys.forEach((el) => {
       el.addEventListener('click', () => {
         if (el.dataset.ru || el.id.slice(0, 5) === 'Digit'
          || el.id.slice(0, 5) === 'Minus' || el.id.slice(0, 5) === 'Equal') {
-          disp.value += el.textContent;
+          this.textWindow.value += el.textContent;
         } else {
-          this.checkBtn(el.id, textWindow, symbolsArr);
+          this.checkBtn(el.id);
         }
       });
-
-      function addActionForShift() {
-        symbolsArr.forEach((elm) => {
-          const item = elm;
-          if (item.textContent === item.textContent.toLowerCase()) {
-            item.textContent = item.textContent.toUpperCase();
-          } else {
-            item.textContent = item.textContent.toLowerCase();
-          }
-        });
-      }
-
       if (el.id === 'ShiftLeft' || el.id === 'ShiftRight') {
         el.addEventListener('mousedown', () => {
-          addActionForShift();
+          this.addShiftAction(true);
         });
         el.addEventListener('mouseup', () => {
-          addActionForShift();
+          this.addShiftAction(false);
         });
       }
     });
-    this.addMessageByKeyDown(textWindow, symbolsArr);
+    this.addMessageByKeyDown();
   }
 
-  checkBtn(btnCode, textWindow, symbolsArr) {
-    const displayMsg = textWindow;
-    const start = textWindow.selectionStart;
+  checkBtn(btnCode) {
+    const start = this.textWindow.selectionStart;
     switch (btnCode) {
       case 'Backspace':
-        textWindow.focus();
+        this.textWindow.focus();
         if (start > 0) {
-          displayMsg.value = textWindow.value.slice(0, start - 1) + textWindow.value.slice(start);
-          displayMsg.selectionStart = start - 1;
-          displayMsg.selectionEnd = start - 1;
+          this.textWindow.value = this.textWindow.value.slice(0, start - 1)
+          + this.textWindow.value.slice(start);
+          this.textWindow.selectionStart = start - 1;
+          this.textWindow.selectionEnd = start - 1;
         }
         break;
       case 'Tab':
-        displayMsg.value += '    ';
+        this.textWindow.value += '    ';
         break;
       case 'Space':
-        displayMsg.value += ' ';
+        this.textWindow.value += ' ';
         break;
       case 'Delete':
-        textWindow.focus();
-        if (start < textWindow.value.length) {
-          displayMsg.value = textWindow.value.slice(0, start) + textWindow.value.slice(start + 1);
-          displayMsg.selectionStart = start;
-          displayMsg.selectionEnd = start;
+        this.textWindow.focus();
+        if (start < this.textWindow.value.length) {
+          this.textWindow.value = this.textWindow.value.slice(0, start)
+          + this.textWindow.value.slice(start + 1);
+          this.textWindow.selectionStart = start;
+          this.textWindow.selectionEnd = start;
         }
         break;
       case 'CapsLock':
-        for (let i = 0; i < symbolsArr.length; i += 1) {
-          const arr = symbolsArr;
+        for (let i = 0; i < this.symbolsArr.length; i += 1) {
+          const char = this.symbolsArr;
           if (!this.isCaps) {
-            arr[i].textContent = symbolsArr[i].textContent.toUpperCase();
+            char[i].textContent = char[i].textContent.toUpperCase();
           } else {
-            arr[i].textContent = symbolsArr[i].textContent.toLowerCase();
+            char[i].textContent = char[i].textContent.toLowerCase();
           }
         }
         this.isCaps = !this.isCaps;
         break;
       case 'Enter':
-        displayMsg.value += '\n';
+        this.textWindow.value += '\n';
         break;
       case 'ArrowUp':
-        displayMsg.value += '↑';
+        this.textWindow.value += '↑';
         break;
       case 'ArrowDown':
-        displayMsg.value += '↓';
+        this.textWindow.value += '↓';
         break;
       case 'ArrowRight':
-        displayMsg.value += '→';
+        this.textWindow.value += '→';
         break;
       case 'ArrowLeft':
-        displayMsg.value += '←';
+        this.textWindow.value += '←';
         break;
       default:
     }
@@ -249,8 +237,7 @@ class Keyboard {
     }
   }
 
-  addMessageByKeyDown(textWindow, symbolsArr) {
-    const display = textWindow;
+  addMessageByKeyDown() {
     document.addEventListener('keydown', (evt) => {
       if (evt.code !== 'F12') {
         evt.preventDefault();
@@ -258,14 +245,11 @@ class Keyboard {
       if (this.keyboard.querySelector(`#${evt.code}`)) {
         const item = this.keyboard.querySelector(`#${evt.code}`);
         setTimeout(() => {
-          hightLightKey(item);
+          addKeyEffect(item);
         });
-        if (evt.code === 'Tab') {
-          display.value += '    ';
-        }
         if ((evt.altKey && evt.ctrlKey)) {
           this.changeLang();
-          symbolsArr.forEach((button) => {
+          this.symbolsArr.forEach((button) => {
             const btn = button;
             if (this.isLangRu) {
               if (this.isCaps) {
@@ -285,13 +269,12 @@ class Keyboard {
           });
           this.isLangRu = !this.isLangRu;
         } else if (evt.key === 'Shift') {
-          this.isShift = true;
-          this.addShiftAction(symbolsArr, true);
+          this.addShiftAction(true);
         } else if (item.dataset.eng || item.id.slice(0, 5) === 'Digit'
         || item.id.slice(0, 5) === 'Minus' || item.id.slice(0, 5) === 'Equal') {
-          display.value += item.textContent;
+          this.textWindow.value += item.textContent;
         } else if (!item.dataset.eng) {
-          this.checkBtn(evt.code, textWindow, symbolsArr);
+          this.checkBtn(evt.code);
         }
       }
     });
@@ -300,19 +283,19 @@ class Keyboard {
       if (this.keyboard.querySelector(`#${evt.code}`)) {
         setTimeout(() => {
           const item = this.keyboard.querySelector(`#${evt.code}`);
-          delHightLightKey(item);
+          delKeyEffect(item);
         });
         if (evt.key === 'Shift') {
-          this.isShift = false;
-          this.addShiftAction(symbolsArr, false);
+          this.addShiftAction(false);
         }
       }
     });
   }
 
-  addShiftAction(symbolsArr, isPressed) {
+  addShiftAction(isPressed) {
+    const numArr = document.querySelectorAll('[data-number]');
     if (isPressed) {
-      symbolsArr.forEach((char) => {
+      this.symbolsArr.forEach((char) => {
         const item = char;
         if (this.isCaps) {
           item.textContent = item.textContent.toLowerCase();
@@ -320,12 +303,12 @@ class Keyboard {
           item.textContent = item.textContent.toUpperCase();
         }
       });
-      this.numArr.forEach((e) => {
+      numArr.forEach((e) => {
         e.textContent = e.dataset.shift;
       });
     }
     if (!isPressed) {
-      symbolsArr.forEach((char) => {
+      this.symbolsArr.forEach((char) => {
         const item = char;
         if (this.isCaps) {
           item.textContent = char.textContent.toUpperCase();
@@ -333,7 +316,7 @@ class Keyboard {
           item.textContent = char.textContent.toLowerCase();
         }
       });
-      this.numArr.forEach((e) => {
+      numArr.forEach((e) => {
         e.textContent = e.dataset.number;
       });
     }
