@@ -1,0 +1,207 @@
+body {
+  display: flex;
+  width: 100vw;
+  height: 100vh;
+  background: url(./icons/22.jpg) no-repeat;
+  background-size: cover;
+  flex-direction: column;
+}
+
+main {
+  margin: auto auto;
+  display: flex;
+  flex-direction: column;
+  width: 80%;
+  height: 80%;
+}
+
+.window {
+  display: flex;
+  width: 100%;
+  height: 40%;
+  background-color: rgba(20, 14, 14, 0.86);
+  border-radius: 10px;
+  box-shadow:
+   inset rgba(0, 0, 0, 0.755) 0 -3px 8px,
+   inset rgba(36, 36, 36, 0.73) 0 3px 8px,
+   rgba(0, 0, 0, 0.781) 0 3px 8px -3px;
+}
+
+.keyboard {
+  width: auto;
+  height: auto;
+  background: url(./icons/noise.png) repeat, rgba(74, 20, 20, 0.889);
+  border-radius: 10px;
+  box-shadow:
+   inset rgba(0, 0, 0, 0.555) 0 -3px 8px,
+   inset rgba(36, 36, 36, 0.53) 0 3px 8px,
+   rgba(0, 0, 0, 0.681) 0 3px 8px -3px;
+   display: flex;
+   flex-direction: column;
+}
+
+.window__text {
+  margin: auto auto;
+  font-size: 24px;
+  color: #fff;
+  line-height: 120%;
+  text-shadow:
+    0 0 1px #fff,
+    0 0 1px #fff,
+    0 0 3px #fff,
+    0 0 4px rgb(49, 84, 137),
+    0 0 4px rgb(186, 4, 4),
+    0 0 4px rgb(169, 7, 7),
+    0 0 4px rgb(169, 5, 5),
+    0 0 4px rgb(171, 6, 6);
+  letter-spacing: 5px;
+  padding-left: 5px;
+  word-wrap: break-word;
+  width: 98%;
+  height: 90%;
+  background-color: rgba(20, 14, 14, 0.8);
+  border: none;
+  border-radius: 10px;
+}
+
+.window__desc {
+  margin: auto;
+}
+
+.window__desc::after {
+  content: "Keyboard created for Windows, Change language: ctr + alt";
+  font-size: 20px;
+  /*color: #390303;*/
+  color: #191919;
+  padding: 5px;
+  font-weight: 600;
+  border: 3px solid #390303;
+  border-radius: 5px;
+}
+
+.keyboard__line::after{
+  content: "";
+  display: block;
+  clear: both;
+}
+
+.keyboard__line {
+  display: grid;
+  grid-template-columns: repeat(15, 4.5vw);
+  grid-template-rows: repeat(1, 4.5vw);
+  gap: 3px;
+  justify-content: center;
+  padding: 5px;
+}
+
+.key {
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  float: left;
+  background-color: rgba(50, 13, 13, 0.859);
+  text-align: center;
+  color: #fff;
+  font-size: 20px;
+  text-shadow:
+    0 0 1px #fff,
+    0 0 1px #fff,
+    0 0 3px #fff,
+    0 0 9px rgb(49, 84, 137),
+    0 0 9px rgb(186, 4, 4),
+    0 0 8px rgb(169, 7, 7),
+    0 0 8px rgb(169, 5, 5),
+    0 0 9px rgb(171, 6, 6);
+    border-radius: 10%;
+    box-shadow:
+    inset rgba(0, 0, 0, 0.555) 0 -3px 8px,
+    inset rgba(36, 36, 36, 0.53) 0 3px 8px,
+    rgba(0, 0, 0, 0.681) 0 3px 8px -3px;
+}
+
+#CapsLock, #ShiftLeft {
+  grid-column: 1 / 3;
+  border-radius: 10px;
+}
+
+#Backspace, #ShiftRight, #Enter {
+  grid-column: 14 / 16;
+  border-radius: 10px;
+}
+
+#Tab, #ControlRight, #ControlLeft, #MetaLeft, #AltRight, #Delete,
+#Backspace, #ShiftLeft, #CapsLock, #Enter, #ShiftRight, #AltLeft{
+  font-size: 90%;
+  letter-spacing: 2px;
+}
+
+#Space {
+  grid-column: 4 / 11;
+  border-radius: 10px;
+}
+
+.key:hover {
+  transition: 0.2s;
+  background-color: rgba(35, 9, 9, 0.859);
+}
+
+.key:active {
+  transition: 0.2s;
+  box-shadow:
+  inset rgba(0, 0, 0, 0.7) 0 -8px 8px,
+  inset rgba(0, 0, 0, 0.7) 0 8px 8px,
+  rgba(0, 0, 0, 0.7) 0 8px 8px -8px;
+  transform: scale(0.98)
+}
+
+.active {
+  transition: 0.2s;
+  box-shadow:
+  inset rgba(0, 0, 0, 0.7) 0 -8px 8px,
+  inset rgba(0, 0, 0, 0.7) 0 8px 8px,
+  rgba(0, 0, 0, 0.7) 0 8px 8px -8px;
+  transform: scale(0.98)
+}
+
+#ArrowDown:after, #ArrowLeft:after,
+#ArrowRight:after, #ArrowUp:after {
+  content: "";
+  background: url(./icons/arrow.png) no-repeat center;
+  width: 20px;
+  height: 20px;
+  border-radius: 10px;
+  box-shadow:
+  0 0 1px #fff,
+  0 0 1px #fff,
+  0 0 3px #fff,
+  0 0 9px rgb(49, 84, 137),
+  0 0 9px rgb(186, 4, 4),
+  0 0 8px rgb(169, 7, 7),
+  0 0 8px rgb(169, 5, 5),
+  0 0 9px rgb(171, 6, 6);
+}
+
+#ArrowDown::after {
+  transform: rotate(90deg);
+}
+
+#ArrowLeft::after {
+  transform: rotate(180deg);
+}
+
+#ArrowUp::after {
+  transform: rotate(-90deg);
+}
+
+@media screen and (max-width: 1024px){
+  #Tab, #ControlRight, #ControlLeft, #MetaLeft, #AltRight, #Delete,
+  #Backspace, #ShiftLeft, #CapsLock, #Enter, #ShiftRight, #AltLeft{
+  font-size: 60%;
+  letter-spacing: 0;
+  }
+  .window__desc::after {
+    font-size: 14px;
+    color: #ffffff;
+  }
+}
